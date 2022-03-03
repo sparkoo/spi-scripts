@@ -20,5 +20,6 @@ fi
 set -x
 
 minikube start --memory "${MEMORY}"gb --disk-size 40g --driver="${MINIKUBE_DRIVER}" --cpus='2'
+minikube addons enable ingress
 
 minikube ip

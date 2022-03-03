@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+# shellcheck source=env.sh
+. "$( dirname "${0}" )/env.sh"
+
+. "${SCRIPT_DIR}/spi-buildoauth"
+. "${SCRIPT_DIR}/spi-buildop"
+

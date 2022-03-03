@@ -7,9 +7,13 @@ SCRIPT_DIR=$( dirname "${0}" )
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
 
+pushd ${SPIOAUTHDIR}
+IMAGE_OAUTH="${SPIOAUTHIMAGE}:$( getBranch )"
+popd
+
 pushd ${SPIOPERATORDIR}
 
-IMAGE="${SPIOPERATORIMAGE}:$( getBranch )"
+IMAGE_OP="${SPIOPERATORIMAGE}:$( getBranch )"
+make deploy_minikube SPIO_IMG=${IMAGE_OP} SPIS_IMG=${IMAGE_OAUTH}
 
-make deploy_minikube SPIO_IMG=${IMAGE}
 popd
