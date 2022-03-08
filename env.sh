@@ -4,6 +4,8 @@ set +x
 
 SCRIPT_DIR=$( dirname "${0}" )
 
+SPI_NAMESPACE=spi-system
+
 DEVDIR=${DEVDIR:-${HOME}/dev}
 PRIVATE_DOCKERREGISTRY=${PRIVATE_DOCKERREGISTRY:-quay.io/mvala}
 
