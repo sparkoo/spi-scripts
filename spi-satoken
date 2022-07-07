@@ -7,9 +7,8 @@ set -e
 
 getTokenForSA() {
   SERVICEACCOUNT=${1}
-  SECRET_NAME=$( kubectl get serviceaccount -n ${SPI_NAMESPACE} ${SERVICEACCOUNT} -o json | jq -r '.secrets[].name' )
-  TOKEN=$( kubectl get secret ${SECRET_NAME} -n ${SPI_NAMESPACE} -o json | jq -r '.data.token' )
-  echo ${TOKEN} | base64 -d
+  TOKEN=$( kubectl create token ${SERVICEACCOUNT} -n ${SPI_NAMESPACE} )
+  echo ${TOKEN}
 }
 
 getTokenForSA "spi-controller-manager" > /tmp/spi-operator-sa-token
