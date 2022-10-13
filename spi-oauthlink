@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# shellcheck source=env.sh
+. "$( dirname "${0}" )/env.sh"
+
+NAMESPACE=default
+NAME=${1:-}
+
+# echo ${NAMESPACE}
+# echo ${NAME}
+
+URL=$( kubectl get spiaccesstokenbindings -n ${NAMESPACE} ${NAME} -o json | jq -r '.items[0].status.oAuthUrl' )
+TOKEN=${TOKEN:-$( kubectl create token default )}
+
+URL="${URL}&k8s_token=${TOKEN}"
+
+echo ${URL}

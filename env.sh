@@ -7,15 +7,20 @@ SCRIPT_DIR=$( dirname "${0}" )
 SPI_NAMESPACE=spi-system
 
 DEVDIR=${DEVDIR:-${HOME}/dev}
-PRIVATE_DOCKERREGISTRY=${PRIVATE_DOCKERREGISTRY:-quay.io/mvala}
+SPI_IMG_BASE=${SPI_IMG_BASE:-quay.io/mvala}
 
 SPIOPERATORDIR=${DEVDIR}/spi-operator
-SPIOPERATORIMAGE=${PRIVATE_DOCKERREGISTRY}/spi-operator
+SPIOPERATORIMAGE=${SPI_IMG_BASE}/service-provider-integration-operator
 
 SPIOAUTHDIR=${DEVDIR}/spi-oauth
-SPIOAUTHIMAGE=${PRIVATE_DOCKERREGISTRY}/spi-oauth
+SPIOAUTHIMAGE=${SPI_IMG_BASE}/service-provider-integration-oauth
 
 export SHARED_SECRET=blabol
+
+# override anything in this script
+if [ -f ~/tmp/env-openshift.sh ]; then
+  source ~/tmp/env-openshift.sh
+fi
 
 getBranch() {
   BRANCH=$( git branch --show-current )

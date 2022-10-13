@@ -1,0 +1,26 @@
+#!/bin/bash
+
+. "$( dirname "${0}" )/env.sh"
+
+APPROLE_SECRET_FILE=${APPROLE_SECRET_FILE:-${SPIOPERATORDIR}/.tmp/approle_secret.yaml}
+
+if [ -z ${APPROLE_SECRET_FILE} ]; then
+  echo "can't find approle secret file ${APPROLE_SECRET_FILE}"
+  exit 1
+fi
+
+ROLE_IDS=$( cat ${SPIOPERATORDIR}/.tmp/approle_secret.yaml | yq -o=json | jq -r .data.role_id )
+SECRET_IDS=$( cat ${SPIOPERATORDIR}/.tmp/approle_secret.yaml | yq -o=json | jq -r .data.secret_id )
+
+echo "writing operator vault approle credentials to"
+echo "${SPIOPERATORDIR}/.tmp/operator_vault_approle_roleid"
+echo "${SPIOPERATORDIR}/.tmp/operator_vault_approle_secretid"
+echo "${ROLE_IDS}" | sed -n '1p' | base64 -d > ${SPIOPERATORDIR}/.tmp/operator_vault_approle_roleid
+echo "${SECRET_IDS}" | sed -n '1p' | base64 -d > ${SPIOPERATORDIR}/.tmp/operator_vault_approle_secretid
+echo ""
+
+echo "writing oauth vault approle credentials to"
+echo "${SPIOPERATORDIR}/.tmp/oauth_vault_approle_roleid"
+echo "${SPIOPERATORDIR}/.tmp/oauth_vault_approle_secretid"
+echo "${ROLE_IDS}" | sed -n '2p' | base64 -d > ${SPIOPERATORDIR}/.tmp/oauth_vault_approle_roleid
+echo "${SECRET_IDS}" | sed -n '2p' | base64 -d > ${SPIOPERATORDIR}/.tmp/oauth_vault_approle_secretid
