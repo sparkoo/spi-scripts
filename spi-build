@@ -12,7 +12,7 @@ TAG=$( getBranch )
 set -x
 
 # make docker-build docker-push TAG_NAME=${TAG}
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 make build
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/ ./cmd/...
 docker build . -f ~/dev/spi-scripts/publish.Dockerfile --ignorefile ~/dev/spi-scripts/publish.dockerignore --target spi-operator -t ${SPIOPERATORIMAGE}:${TAG}
 docker build . -f ~/dev/spi-scripts/publish.Dockerfile --ignorefile ~/dev/spi-scripts/publish.dockerignore --target spi-oauth -t ${SPIOAUTHIMAGE}:${TAG}
 

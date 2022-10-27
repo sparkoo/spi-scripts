@@ -29,3 +29,9 @@ getBranch() {
   fi
   echo ${BRANCH}
 }
+
+pushd ${SPIOPERATORDIR}
+
+TAG=${TAG:-$( getBranch )}
+
+popd

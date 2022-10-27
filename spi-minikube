@@ -11,6 +11,7 @@ else
   MEMORY=${1}
 fi
 
+EXTRA_ARGS=
 if [ $( uname ) == "Darwin" ]; then
   MINIKUBE_DRIVER="hyperkit"
 else
@@ -19,7 +20,7 @@ fi
 
 set -x
 
-minikube start --memory "${MEMORY}"gb --disk-size 40g --driver="${MINIKUBE_DRIVER}" --cpus='2'
+minikube start --memory "${MEMORY}"gb --disk-size 40g --driver="${MINIKUBE_DRIVER}" --cpus='2' ${EXTRA_ARGS}
 minikube addons enable ingress
 
 minikube ip
