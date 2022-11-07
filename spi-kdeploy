@@ -9,7 +9,6 @@ SCRIPT_DIR=$( dirname "${0}" )
 
 pushd ${SPIOPERATORDIR}
 
-rm bin/kustomize
 make deploy_minikube TAG_NAME=${TAG}
 
 popd
