@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kubectl rollout restart deployment -n spi-system spi-controller-manager spi-oauth-service

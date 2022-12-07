@@ -7,8 +7,16 @@ SCRIPT_DIR=$( dirname "${0}" )
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
 
+minikube status > /dev/null || . "${SCRIPT_DIR}/spi-minikube"
+set +x
+
 pushd ${SPIOPERATORDIR}
 
 make deploy_minikube TAG_NAME=${TAG}
+kubectl patch cm -n spi-system spi-shared-environment-config --type json --patch '[{"op": "add", "path": "/data/ZAPDEVEL", "value": "true"}]'
+kubectl patch deployment spi-controller-manager -n spi-system --patch '{"spec": {"template": {"spec": {"containers": [{"name": "manager","imagePullPolicy": "Always"}]}}}}'
+kubectl patch deployment spi-oauth-service -n spi-system --patch '{"spec": {"template": {"spec": {"containers": [{"name": "oauth","imagePullPolicy": "Always"}]}}}}'
+
+. "${SCRIPT_DIR}/spi-krestart"
 
 popd
