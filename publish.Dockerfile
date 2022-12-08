@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.6-941 as spi-operator
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest as spi-operator
 
 WORKDIR /
 
@@ -19,7 +19,7 @@ USER 65532:65532
 ENTRYPOINT ["/operator"]
 
 # Compose the final image of spi-oauth service
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.6-941 as spi-oauth
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest as spi-oauth
 
 WORKDIR /
 
