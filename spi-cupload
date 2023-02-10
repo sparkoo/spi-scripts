@@ -1,0 +1,17 @@
+#!/bin/bash
+
+. "$( dirname "${0}" )/env.sh"
+
+set -x
+
+TOKENBINDING=${1}
+
+if [ -z ${TOKENBINDING} ]; then
+  echo "must provide SPIAccessTokenBinding name"
+  exit 1
+fi
+
+UPLOAD_URL=$( kubectl get SPIAccessTokenBinding ${TOKENBINDING} -o json | jq -r .status.uploadUrl )
+TOKEN=$( oc whoami -t )
+
+curl -k -v POST -H "Content-Type: application/json" -H "Authorization: Bearer ${TOKEN}" -d'{"username": "blabol", "access_token": "blboast"}' "${UPLOAD_URL}"

@@ -1,3 +1,6 @@
 #!/bin/sh
 
-kubectl rollout restart deployment -n spi-system spi-controller-manager spi-oauth-service
+# shellcheck source=env.sh
+. "$( dirname "${0}" )/env.sh"
+
+kubectl rollout restart deployment -n ${SPI_NAMESPACE} spi-controller-manager spi-oauth-service

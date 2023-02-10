@@ -7,13 +7,14 @@ SCRIPT_DIR=$( dirname "${0}" )
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
 
-minikube status > /dev/null || . "${SCRIPT_DIR}/spi-minikube"
 set +x
 
 pushd ${SPIOPERATORDIR}
 
-make deploy_minikube TAG_NAME=${TAG}
+make deploy_openshift TAG_NAME=${TAG} SPI_IMG_BASE=${SPI_IMG_BASE}
+ROUTE=$( kubectl get route -n ${SPI_NAMESPACE} spi-oauth -o json | jq -r .spec.host )
 kubectl patch cm -n ${SPI_NAMESPACE} spi-shared-environment-config --type json --patch '[{"op": "add", "path": "/data/ZAPDEVEL", "value": "true"}]'
+kubectl patch cm -n ${SPI_NAMESPACE} spi-shared-environment-config --type json --patch '[{"op": "replace", "path": "/data/BASEURL", "value": "https://'${ROUTE}'"}]'
 kubectl patch deployment spi-controller-manager -n ${SPI_NAMESPACE} --patch '{"spec": {"template": {"spec": {"containers": [{"name": "manager","imagePullPolicy": "Always"}]}}}}'
 kubectl patch deployment spi-oauth-service -n ${SPI_NAMESPACE} --patch '{"spec": {"template": {"spec": {"containers": [{"name": "oauth","imagePullPolicy": "Always"}]}}}}'
 
